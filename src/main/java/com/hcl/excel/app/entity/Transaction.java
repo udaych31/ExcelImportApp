@@ -36,6 +36,9 @@ public class Transaction implements Serializable {
 	private double price;
 	
 	@Column
+	private double totalPrice;
+	
+	@Column
 	private Date createDt;
 	
 	public Transaction() {
@@ -97,6 +100,14 @@ public class Transaction implements Serializable {
 	public void setCreateDt(Date createDt) {
 		this.createDt = createDt;
 	}
+	
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
 
 	@Override
 	public String toString() {
@@ -113,6 +124,8 @@ public class Transaction implements Serializable {
 		builder.append(quantity);
 		builder.append(", price=");
 		builder.append(price);
+		builder.append(", totalPrice=");
+		builder.append(totalPrice);
 		builder.append(", createDt=");
 		builder.append(createDt);
 		builder.append("]");
