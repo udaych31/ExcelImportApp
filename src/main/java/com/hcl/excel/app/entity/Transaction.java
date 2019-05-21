@@ -38,6 +38,18 @@ public class Transaction implements Serializable {
 	@Column
 	private Date createDt;
 	
+	@Column
+	private double totalPrice;
+	
+	
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
+
 	public Transaction() {
 		super();
 	}
