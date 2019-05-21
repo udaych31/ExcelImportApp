@@ -73,11 +73,11 @@ public class UserStockServiceImpl implements UserStockService {
 		try {
 			response = new UserResponse();
 			usersdto = new ArrayList<UserDto>();
-			List<Object[]> users = (List<Object[]>) userRepository.findUsers();
+			List<Integer> users = (List<Integer>) userRepository.findUsers();
 
-			for (Object[] user : users) {
+			for (Integer user : users) {
 				UserDto userdto = new UserDto();
-				userdto.setUserId((Integer) (user[0]));
+				userdto.setUserId((Integer) (user));
 				usersdto.add(userdto);
 			}
 			response.setUsers(usersdto);
