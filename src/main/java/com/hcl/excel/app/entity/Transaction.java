@@ -8,10 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="TRANSACTION_DETAILS")
+@NamedQuery(name = "Transaction.findWeeklySpend",query="select sum(t.totalPrice),t.userId from Transaction t where t.userId=:userId and t.createDt > CURRENT_DATE- :noOfWeeks  ")
 public class Transaction implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -34,6 +36,9 @@ public class Transaction implements Serializable {
 	
 	@Column
 	private double price;
+	
+	@Column
+	private double totalPrice;
 	
 	@Column
 	private Date createDt;
@@ -97,6 +102,14 @@ public class Transaction implements Serializable {
 	public void setCreateDt(Date createDt) {
 		this.createDt = createDt;
 	}
+	
+	public double getTotalPrice() {
+		return totalPrice;
+	}
+
+	public void setTotalPrice(double totalPrice) {
+		this.totalPrice = totalPrice;
+	}
 
 	@Override
 	public String toString() {
@@ -113,6 +126,8 @@ public class Transaction implements Serializable {
 		builder.append(quantity);
 		builder.append(", price=");
 		builder.append(price);
+		builder.append(", totalPrice=");
+		builder.append(totalPrice);
 		builder.append(", createDt=");
 		builder.append(createDt);
 		builder.append("]");
