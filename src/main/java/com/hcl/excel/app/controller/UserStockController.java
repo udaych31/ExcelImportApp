@@ -2,10 +2,13 @@ package com.hcl.excel.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.hcl.excel.app.dto.ExcelResponse;
+import com.hcl.excel.app.dto.WeeklySpentRequest;
+import com.hcl.excel.app.dto.WeeklyUserSpendResponse;
 import com.hcl.excel.app.service.UserStockServiceImpl;
 
 @RestController
@@ -18,8 +21,15 @@ public class UserStockController {
 	
 	
 	@GetMapping("/importData")
-	private ExcelResponse importDataIntoDB() {
+	public ExcelResponse importDataIntoDB() {
 		return userStockServiceImpl.importDataIntoDB();
 	}
+	
+	@PostMapping("/getweeklyspent")
+	public WeeklyUserSpendResponse findUserWeeklySpend(WeeklySpentRequest request) {
+		return userStockServiceImpl.weeklySpendByUser(request);
+	}
+	
+	
 
 }

@@ -8,10 +8,12 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="TRANSACTION_DETAILS")
+@NamedQuery(name = "Transaction.findWeeklySpend",query="select sum(t.totalPrice),t.userId from Transaction t where t.userId=:userId and t.createDt > CURRENT_DATE- :noOfWeeks  ")
 public class Transaction implements Serializable {
 
 	private static final long serialVersionUID = 1L;
