@@ -38,6 +38,9 @@ public class Transaction implements Serializable {
 	@Column
 	private Date createDt;
 	
+	@Column
+	private Double totalPrice;
+	
 	public Transaction() {
 		super();
 	}
