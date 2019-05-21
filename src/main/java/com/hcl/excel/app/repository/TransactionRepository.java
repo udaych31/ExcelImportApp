@@ -14,7 +14,7 @@ import com.hcl.excel.app.entity.Transaction;
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
 	
 	
-	public List<?> findWeeklySpend(@Param(value = "userId") Integer userId,@Param(value="noOfWeeks") Integer noOfWeeks);
+	public List<Object[]> findWeeklySpend(@Param(value = "userId") Integer userId,@Param(value="noOfWeeks") Integer noOfWeeks);
 	
 
 }
