@@ -16,6 +16,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import com.hcl.excel.app.dto.ExcelResponse;
 import com.hcl.excel.app.dto.WeeklySpentRequest;
+import com.hcl.excel.app.dto.WeeklyUserSpendResponse;
 import com.hcl.excel.app.repository.TransactionRepository;
 import com.hcl.excel.app.util.ExcelImportToDB;
 
@@ -52,13 +53,16 @@ public class UserStockServiceImplTest {
 		WeeklySpentRequest request=new  WeeklySpentRequest();
 		request.setNoOfWeeks(1);
 		request.setUserId(1);
-		List<?> list=new ArrayList<>();
+		List<Object[]> list=new ArrayList<>();
 		Object[] obj=new Object[2];
-		obj[0]=1234;
+		obj[0]=48783;
 		obj[1]=1;
-		//list.add(obj);
-		//when(transactionRepository.findWeeklySpend(1, 1)).thenReturn(list);
-		assertEquals(true, true);
+		list.add(obj);
+		when(transactionRepository.findWeeklySpend(1,7)).thenReturn(list);
+		
+		WeeklyUserSpendResponse weeklySpendByUser = userStockServiceImpl.weeklySpendByUser(request);
+		
+		assertEquals(weeklySpendByUser.getTotalPrice(), list.get(0)[0]);
 		
 	}
 	
