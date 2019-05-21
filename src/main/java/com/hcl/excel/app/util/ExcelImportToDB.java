@@ -69,7 +69,7 @@ public class ExcelImportToDB {
 					transaction.setUserId(userId);
 
 					transaction.setTotalPrice(quantity * price);
-
+					transaction.setTransactionId(id);
 					transactionRepository.save(transaction);
 				}
 
