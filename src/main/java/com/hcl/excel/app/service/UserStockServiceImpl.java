@@ -37,10 +37,10 @@ public class UserStockServiceImpl implements UserStockService {
 		
 		try {
 			response=new WeeklyUserSpendResponse();
-			Integer noOfWeeks = request.getNoOfWeeks();
-			List<Object[]> obj = (List<Object[]>) transactionRepository.findWeeklySpend(request.getUserId(),noOfWeeks*7);
+			Integer noOfWeeks = request.getNoOfWeeks()*7;
+			List<Object[]> obj = (List<Object[]>) transactionRepository.findWeeklySpend(request.getUserId(),noOfWeeks);
 			response=new WeeklyUserSpendResponse();
-			response.setTotalPrice((double)obj.get(0)[0]);
+			response.setTotalPrice((Integer)obj.get(0)[0]);
 			response.setUserId(((Integer)obj.get(0)[1]));
 			
 			

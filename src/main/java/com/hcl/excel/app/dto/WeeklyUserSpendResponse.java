@@ -9,7 +9,7 @@ public class WeeklyUserSpendResponse implements Serializable {
 
 	private Integer userId;
 	
-	private double totalPrice;
+	private Integer totalPrice;
 	
 	public WeeklyUserSpendResponse() {
 		super();
@@ -23,11 +23,11 @@ public class WeeklyUserSpendResponse implements Serializable {
 		this.userId = userId;
 	}
 
-	public double getTotalPrice() {
+	public Integer getTotalPrice() {
 		return totalPrice;
 	}
 
-	public void setTotalPrice(double totalPrice) {
+	public void setTotalPrice(Integer totalPrice) {
 		this.totalPrice = totalPrice;
 	}
 
