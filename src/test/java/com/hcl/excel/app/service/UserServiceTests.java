@@ -31,14 +31,14 @@ public class UserServiceTests {
 	@Test
 	public void testGetUsers() {
 	
-	  Object[] obj=new Object[2];
+	  Integer[] obj=new Integer[2];
 	  
 	  obj[0]=1;
 	  obj[1]=2;
 	
-	 List list=new ArrayList();
+	 List<Integer> list=new ArrayList();
 	
-	 list.add(obj);
+	 list.add(1);
 	 
 	
 	
