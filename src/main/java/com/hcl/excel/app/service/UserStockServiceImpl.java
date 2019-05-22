@@ -1,5 +1,6 @@
 package com.hcl.excel.app.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.hcl.excel.app.dto.DateRangeRequest;
+import com.hcl.excel.app.dto.DateRangeResponse;
 import com.hcl.excel.app.dto.ExcelResponse;
 import com.hcl.excel.app.dto.MonthlyDto;
 import com.hcl.excel.app.dto.MonthlyResponse;
@@ -57,8 +60,12 @@ public class UserStockServiceImpl implements UserStockService {
 			Integer noOfWeeks = request.getNoOfWeeks()*7;
 			List<Object[]> obj = (List<Object[]>) transactionRepository.findWeeklySpend(request.getUserId(),noOfWeeks);
 			response=new WeeklyUserSpendResponse();
-			response.setTotalPrice((Integer)obj.get(0)[0]);
-			response.setUserId(((Integer)obj.get(0)[1]));
+			if(!obj.isEmpty()) {
+				if(obj.get(0)[0]!=null) {
+					response.setTotalPrice((double)obj.get(0)[0]);
+				}
+				response.setUserId(request.getUserId());
+			} 
 
 		} catch (Exception e) {
 			logger.error(this.getClass().getName() + " weeklySpendByUser :: " + e.getMessage());
@@ -116,7 +123,6 @@ public class UserStockServiceImpl implements UserStockService {
 
 	@Override
 	public MonthlyResponse monthly(MonthlyPojo month) {
-		// TODO Auto-generated method stub
 		List<Transaction> result=transactionRepository.getMonthly(month.getMonth(), month.getUserId());
 		MonthlyResponse monthlyResponse=new MonthlyResponse();
 		ArrayList<MonthlyDto> ar=new ArrayList<MonthlyDto>();
@@ -145,8 +151,7 @@ public class UserStockServiceImpl implements UserStockService {
 	}
 
 	@Override
-	public MonthlyResponse monthlyproduct(MonthlyProductPojo month) {
-		// TODO Auto-generated method stub
+	public MonthlyResponse monthlyProduct(MonthlyProductPojo month) {
 				List<Transaction> result=transactionRepository.getMonthlyProductHistory(month.getMonth(), month.getProductId());
 				MonthlyResponse monthlyResponse=new MonthlyResponse();
 				ArrayList<MonthlyDto> ar=new ArrayList<MonthlyDto>();
@@ -172,6 +177,41 @@ public class UserStockServiceImpl implements UserStockService {
 				monthlyResponse.setTotalMonthSpend(d);
 				System.out.println(result);
 				return monthlyResponse;
+	}
+	
+	@Override
+	public DateRangeResponse getUserSpentsWithinRange(DateRangeRequest request) {
+		DateRangeResponse response=null;
+		try {
+			if(request!=null) {
+				response=new DateRangeResponse();
+				
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+				logger.info(request.getFromDate());
+				Date fromDt = sdf.parse(request.getFromDate());
+				Date toDate = sdf.parse(request.getToDate());
+				
+				logger.info(fromDt);
+				logger.info(toDate);
+				
+				Double dateRange = transactionRepository.dateRange(fromDt, toDate,request.getUserId());
+				if(dateRange!=null) {
+					response.setUserId(request.getUserId());
+					response.setFromDate(request.getFromDate());
+					response.setToDate(request.getToDate());
+					response.setTotalSpent(dateRange);
+				}else {
+					response.setUserId(request.getUserId());
+					response.setFromDate(request.getFromDate());
+					response.setToDate(request.getToDate());
+				}
+			}
+			
+		} catch (Exception e) {
+			logger.error(this.getClass().getName()+" - getUserSpentsWithinRange : "+e.getMessage());
+		}
+		
+		return response;
 	}
 
 }
