@@ -1,5 +1,6 @@
 package com.hcl.excel.app.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -58,7 +59,11 @@ public class UserServiceTests {
 		
 		  Object[] obj=new Object[4];
 		  
-		  obj[0]=new Date();;
+		  Date date=new Date();
+		  SimpleDateFormat value=new SimpleDateFormat("yyyy-MM-dd");
+		  String date1=value.format(date);
+		
+		  obj[0]=new Date();		  
 		  obj[1]=2;
 		  obj[2]="laptop";
 		  obj[3]=100.0;
@@ -73,7 +78,7 @@ public class UserServiceTests {
 			
 		  ResultResponse response=serviceImpl.dailyReport(1);
 		  
-		 Assert.assertEquals(obj[0], response.getResults().get(0).getCreateDate());
+		 Assert.assertEquals(date1, response.getResults().get(0).getCreateDate());
 			
 		
 		
