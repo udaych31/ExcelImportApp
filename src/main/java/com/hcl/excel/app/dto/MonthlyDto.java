@@ -68,7 +68,7 @@ public class MonthlyDto {
 				+ createDt + ", totalPrice=" + totalPrice + "]";
 	}
 	public MonthlyDto() {
-		
+		super();
 	}
 	
 

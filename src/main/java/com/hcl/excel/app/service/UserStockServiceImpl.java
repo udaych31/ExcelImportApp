@@ -56,7 +56,7 @@ public class UserStockServiceImpl implements UserStockService {
 
 			response = new WeeklyUserSpendResponse();
 			Integer noOfWeeks = request.getNoOfWeeks() * 7;
-			List<Object[]> obj = (List<Object[]>) transactionRepository.findWeeklySpend(request.getUserId(), noOfWeeks);
+			List<Object[]> obj = transactionRepository.findWeeklySpend(request.getUserId(), noOfWeeks);
 			response = new WeeklyUserSpendResponse();
 			if(!obj.isEmpty()) {
 				if(obj.get(0)[0]!=null) {
@@ -80,7 +80,7 @@ public class UserStockServiceImpl implements UserStockService {
 		try {
 			response = new UserResponse();
 			usersdto = new ArrayList<UserDto>();
-			List<Integer> users = (List<Integer>) userRepository.findUsers();
+			List<Integer> users =  userRepository.findUsers();
 
 			for (Integer user : users) {
 				UserDto userdto = new UserDto();
