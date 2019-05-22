@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.hcl.excel.app.dto.DateRangeRequest;
+import com.hcl.excel.app.dto.DateRangeResponse;
 import com.hcl.excel.app.dto.ExcelResponse;
 import com.hcl.excel.app.dto.MonthlyResponse;
 import com.hcl.excel.app.pojo.MonthlyPojo;
@@ -21,6 +23,11 @@ import com.hcl.excel.app.dto.WeeklySpentRequest;
 import com.hcl.excel.app.dto.WeeklyUserSpendResponse;
 import com.hcl.excel.app.service.UserStockService;
 import com.hcl.excel.app.service.UserStockServiceImpl;
+
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiKeyAuthDefinition;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
 
 @RestController
 @RequestMapping("/user")
@@ -43,7 +50,8 @@ public class UserStockController {
 	}
 
 	@GetMapping("/getUsers")
-	private UserResponse getUsers() {
+	@ApiOperation(value = "Listing the users who already done transactions")
+	public UserResponse getUsers() {
 
 		UserResponse response = userStockService.getUsers();
 
@@ -52,7 +60,7 @@ public class UserStockController {
 	}
 
 	@GetMapping("/getDailyBaseReport")
-	private ResultResponse getDailyBaseReport(@RequestParam Integer userid) {
+	public ResultResponse getDailyBaseReport(@RequestParam Integer userid) {
 
 		ResultResponse response = userStockService.dailyReport(userid);
 		return response;
@@ -60,14 +68,24 @@ public class UserStockController {
 	}
 	
 	@PostMapping("/monthlyusertransaction")
-	private MonthlyResponse monthly(@RequestBody MonthlyPojo month) {
+	public MonthlyResponse monthly(@RequestBody MonthlyPojo month) {
 		MonthlyResponse response=userStockService.monthly(month);
 		return response;
 	}
 	@PostMapping("/monthlyproductransaction")
-	private MonthlyResponse monthlyproduct(@RequestBody MonthlyProductPojo month) {
-		MonthlyResponse response=userStockService.monthlyproduct(month);
+	public MonthlyResponse monthlyproduct(@RequestBody MonthlyProductPojo month) {
+
+		
+		MonthlyResponse response=userStockService.monthlyProduct(month);
 		return response;
 	}
+	
+	@PostMapping("/daterange")
+	public DateRangeResponse getUserSpentsWithinDates(DateRangeRequest request) {
+		DateRangeResponse dateRange = userStockServiceImpl.getUserSpentsWithinRange(request);
+		System.out.println(dateRange.toString());
+		return dateRange;
+	}
+	
 
 }

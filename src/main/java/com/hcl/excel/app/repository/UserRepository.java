@@ -18,6 +18,6 @@ public interface UserRepository extends JpaRepository<Transaction, Integer>{
 	  
 	  
 	  @Query("select c.createDt,c.productId,c.productName,SUM(totalPrice) from Transaction c where c.userId=:userId"
-		  		+ " group by c.createDt")
+		  		+ " group by c.createDt,c.productId")
 		  List<?> findDayBaseResut(@Param("userId") Integer userId);
 }
