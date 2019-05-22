@@ -129,7 +129,6 @@ public class UserStockServiceImpl implements UserStockService {
 	@Override
 	public MonthlyResponse monthly(MonthlyPojo month) {
 
-		// TODO Auto-generated method stub
 		List<Transaction> result = transactionRepository.getMonthly(month.getMonth(), month.getUserId());
 		MonthlyResponse monthlyResponse = new MonthlyResponse();
 		ArrayList<MonthlyDto> ar = new ArrayList<MonthlyDto>();
@@ -153,7 +152,6 @@ public class UserStockServiceImpl implements UserStockService {
 		monthlyResponse.setMonthlyDto(ar);
 		monthlyResponse.setMessage("200");
 		monthlyResponse.setTotalMonthSpend(d);
-		System.out.println(result);
 		return monthlyResponse;
 	}
 	
@@ -183,7 +181,6 @@ public class UserStockServiceImpl implements UserStockService {
 				monthlyResponse.setMonthlyDto(ar);
 				monthlyResponse.setMessage("200");
 				monthlyResponse.setTotalMonthSpend(d);
-				System.out.println(result);
 				return monthlyResponse;
 	}
 	

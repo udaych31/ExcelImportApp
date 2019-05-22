@@ -80,14 +80,8 @@ public class UserServiceTests {
 		  
 		 Assert.assertEquals(date1, response.getResults().get(0).getCreateDate());
 			
-		
-		
+			
 		
 	}
-	
-	
-	
-	
-
 
 }
