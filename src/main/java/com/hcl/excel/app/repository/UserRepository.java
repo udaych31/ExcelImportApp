@@ -14,7 +14,7 @@ import com.hcl.excel.app.entity.Transaction;
 public interface UserRepository extends JpaRepository<Transaction, Integer>{
 	
 	  @Query("select DISTINCT c.userId from Transaction c")     
-	  List<?>   findUsers();
+	  List<Integer>   findUsers();
 	  
 	  
 	  @Query("select c.createDt,c.productId,c.productName,SUM(totalPrice) from Transaction c where c.userId=:userId"

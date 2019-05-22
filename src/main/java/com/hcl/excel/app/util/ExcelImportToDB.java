@@ -1,8 +1,10 @@
 package com.hcl.excel.app.util;
 
 import java.io.FileInputStream;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,6 +12,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,18 +34,18 @@ public class ExcelImportToDB {
 
 		ExcelResponse response = new ExcelResponse();
 		FileInputStream input = null;
-		POIFSFileSystem fs = null;
-		HSSFWorkbook wb = null;
 		XSSFSheet sheet = null;
+		XSSFWorkbook workbook=null;
 		try {
 
 			input = new FileInputStream("C:\\uday\\product.xlsx");
-			XSSFWorkbook workbook = new XSSFWorkbook(input);
+			workbook = (XSSFWorkbook) WorkbookFactory.create((input));
 
 			sheet = workbook.getSheetAt(0);
 
 			Iterator<Row> rowIterator = sheet.iterator();
 
+			List<Transaction> transactionList=new ArrayList<>();
 			Row row;
 			int result = 0;
 			while (rowIterator.hasNext()) {
@@ -70,19 +73,23 @@ public class ExcelImportToDB {
 
 					transaction.setTotalPrice(quantity * price);
 					transaction.setTransactionId(id);
-					transactionRepository.save(transaction);
+					transactionList.add(transaction);
+					
 				}
 
 			}
-
+			transactionRepository.saveAll(transactionList);
 			response.setMessage("success");
 		} catch (Exception e) {
 			logger.error(this.getClass().getName() + " loadDataToDB : " + e.getMessage());
 		} finally {
 			try {
-				input.close();
-				fs.close();
-				wb.close();
+				if(workbook!=null) {
+					workbook.close();
+				}
+				if(input!=null) {
+					input.close();
+				}				
 				sheet = null;
 			} catch (Exception e) {
 				logger.error(this.getClass().getName() + " loadDataToDB finally block : " + e.getMessage());
