@@ -1,7 +1,12 @@
 package com.hcl.excel.app.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TimeZone;
+
+import javax.swing.text.DateFormatter;
 
 import java.util.Date;
 import java.util.List;
@@ -53,12 +58,12 @@ public class UserStockServiceImpl implements UserStockService {
 		WeeklyUserSpendResponse response = null;
 
 		try {
-			response=new WeeklyUserSpendResponse();
-			Integer noOfWeeks = request.getNoOfWeeks()*7;
-			List<Object[]> obj = (List<Object[]>) transactionRepository.findWeeklySpend(request.getUserId(),noOfWeeks);
-			response=new WeeklyUserSpendResponse();
-			response.setTotalPrice((Integer)obj.get(0)[0]);
-			response.setUserId(((Integer)obj.get(0)[1]));
+			response = new WeeklyUserSpendResponse();
+			Integer noOfWeeks = request.getNoOfWeeks() * 7;
+			List<Object[]> obj = (List<Object[]>) transactionRepository.findWeeklySpend(request.getUserId(), noOfWeeks);
+			response = new WeeklyUserSpendResponse();
+			response.setTotalPrice((Integer) obj.get(0)[0]);
+			response.setUserId(((Integer) obj.get(0)[1]));
 
 		} catch (Exception e) {
 			logger.error(this.getClass().getName() + " weeklySpendByUser :: " + e.getMessage());
@@ -89,7 +94,7 @@ public class UserStockServiceImpl implements UserStockService {
 		return response;
 	}
 
-	@SuppressWarnings("deprecation")
+	
 	@Override
 	public ResultResponse dailyReport(Integer userId) {
 
@@ -101,7 +106,13 @@ public class UserStockServiceImpl implements UserStockService {
 		for (Object[] res : details) {
 
 			ResultDto dto = new ResultDto();
-			dto.setCreateDate((Date) res[0]);
+
+			Date date = (Date) res[0];
+			
+			SimpleDateFormat date1 = new SimpleDateFormat("yyyy-MM-dd");
+			String value = date1.format(date);
+
+			dto.setCreateDate(value);
 			dto.setProductId((Integer) res[1]);
 			dto.setProductName((String) (res[2]));
 			dto.setSumOfTotalPrice((Double) (res[3]));
@@ -117,14 +128,13 @@ public class UserStockServiceImpl implements UserStockService {
 	@Override
 	public MonthlyResponse monthly(MonthlyPojo month) {
 		// TODO Auto-generated method stub
-		List<Transaction> result=transactionRepository.getMonthly(month.getMonth(), month.getUserId());
-		MonthlyResponse monthlyResponse=new MonthlyResponse();
-		ArrayList<MonthlyDto> ar=new ArrayList<MonthlyDto>();
-		Double d=(double) 0;
-		for(Transaction transaction:result)
-		{
-			
-			MonthlyDto monthlyDto=new MonthlyDto();
+		List<Transaction> result = transactionRepository.getMonthly(month.getMonth(), month.getUserId());
+		MonthlyResponse monthlyResponse = new MonthlyResponse();
+		ArrayList<MonthlyDto> ar = new ArrayList<MonthlyDto>();
+		Double d = (double) 0;
+		for (Transaction transaction : result) {
+
+			MonthlyDto monthlyDto = new MonthlyDto();
 			monthlyDto.setTransactionId(transaction.getTransactionId());
 			monthlyDto.setProductId(transaction.getProductId());
 			monthlyDto.setUserId(transaction.getUserId());
@@ -133,10 +143,10 @@ public class UserStockServiceImpl implements UserStockService {
 			monthlyDto.setPrice(transaction.getPrice());
 			monthlyDto.setQuantity(transaction.getQuantity());
 			monthlyDto.setTotalPrice(transaction.getTotalPrice());
-			d=d+monthlyDto.getTotalPrice();
+			d = d + monthlyDto.getTotalPrice();
 			ar.add(monthlyDto);
-			
-					}
+
+		}
 		monthlyResponse.setMonthlyDto(ar);
 		monthlyResponse.setMessage("200");
 		monthlyResponse.setTotalMonthSpend(d);
@@ -147,31 +157,31 @@ public class UserStockServiceImpl implements UserStockService {
 	@Override
 	public MonthlyResponse monthlyproduct(MonthlyProductPojo month) {
 		// TODO Auto-generated method stub
-				List<Transaction> result=transactionRepository.getMonthlyProductHistory(month.getMonth(), month.getProductId());
-				MonthlyResponse monthlyResponse=new MonthlyResponse();
-				ArrayList<MonthlyDto> ar=new ArrayList<MonthlyDto>();
-				Double d=(double) 0;
-				for(Transaction transaction:result)
-				{
-					
-					MonthlyDto monthlyDto=new MonthlyDto();
-					monthlyDto.setTransactionId(transaction.getTransactionId());
-					monthlyDto.setProductId(transaction.getProductId());
-					monthlyDto.setUserId(transaction.getUserId());
-					monthlyDto.setCreateDt(transaction.getCreateDt());
-					monthlyDto.setProductName(transaction.getProductName());
-					monthlyDto.setPrice(transaction.getPrice());
-					monthlyDto.setQuantity(transaction.getQuantity());
-					monthlyDto.setTotalPrice(transaction.getTotalPrice());
-					d=d+monthlyDto.getTotalPrice();
-					ar.add(monthlyDto);
-					
-							}
-				monthlyResponse.setMonthlyDto(ar);
-				monthlyResponse.setMessage("200");
-				monthlyResponse.setTotalMonthSpend(d);
-				System.out.println(result);
-				return monthlyResponse;
+		List<Transaction> result = transactionRepository.getMonthlyProductHistory(month.getMonth(),
+				month.getProductId());
+		MonthlyResponse monthlyResponse = new MonthlyResponse();
+		ArrayList<MonthlyDto> ar = new ArrayList<MonthlyDto>();
+		Double d = (double) 0;
+		for (Transaction transaction : result) {
+
+			MonthlyDto monthlyDto = new MonthlyDto();
+			monthlyDto.setTransactionId(transaction.getTransactionId());
+			monthlyDto.setProductId(transaction.getProductId());
+			monthlyDto.setUserId(transaction.getUserId());
+			monthlyDto.setCreateDt(transaction.getCreateDt());
+			monthlyDto.setProductName(transaction.getProductName());
+			monthlyDto.setPrice(transaction.getPrice());
+			monthlyDto.setQuantity(transaction.getQuantity());
+			monthlyDto.setTotalPrice(transaction.getTotalPrice());
+			d = d + monthlyDto.getTotalPrice();
+			ar.add(monthlyDto);
+
+		}
+		monthlyResponse.setMonthlyDto(ar);
+		monthlyResponse.setMessage("200");
+		monthlyResponse.setTotalMonthSpend(d);
+		System.out.println(result);
+		return monthlyResponse;
 	}
 
 }
