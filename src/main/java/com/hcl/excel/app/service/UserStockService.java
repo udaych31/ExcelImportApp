@@ -1,5 +1,7 @@
 package com.hcl.excel.app.service;
 
+import com.hcl.excel.app.dto.DateRangeRequest;
+import com.hcl.excel.app.dto.DateRangeResponse;
 import com.hcl.excel.app.dto.ExcelResponse;
 import com.hcl.excel.app.dto.MonthlyResponse;
 import com.hcl.excel.app.pojo.MonthlyPojo;
@@ -17,11 +19,13 @@ public interface UserStockService {
 
 	public MonthlyResponse monthly(MonthlyPojo month);
 
-	public MonthlyResponse monthlyproduct(MonthlyProductPojo month);
+	public MonthlyResponse monthlyProduct(MonthlyProductPojo month);
 	public UserResponse getUsers();
 
 	public ResultResponse dailyReport(Integer userId);
 
 	public WeeklyUserSpendResponse weeklySpendByUser(WeeklySpentRequest userId);
+	
+	public DateRangeResponse getUserSpentsWithinRange(DateRangeRequest request);
 
 }

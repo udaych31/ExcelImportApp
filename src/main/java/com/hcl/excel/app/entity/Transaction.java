@@ -14,6 +14,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name="TRANSACTION_DETAILS")
 @NamedQuery(name = "Transaction.findWeeklySpend",query="select sum(t.totalPrice),t.userId from Transaction t where t.userId=:userId and t.createDt > CURRENT_DATE- :noOfWeeks  ")
+@NamedQuery(name="Transaction.dateRange",query="select sum(t.totalPrice) from Transaction t where t.createDt  between :fromDt and :toDate and t.userId=:userId ")
 public class Transaction implements Serializable {
 
 	private static final long serialVersionUID = 1L;
